@@ -37,7 +37,6 @@ public class Gun_Uzi : MonoBehaviour {
     public float reloadTime = 1.8f; // 재장전 소요 시간
     protected float lastFireTime; // 총을 마지막으로 발사한 시점
 
-    public int gunType;//총의 종류
 
     private void Awake() {
         // 사용할 컴포넌트들의 참조를 가져오기
@@ -54,7 +53,6 @@ public class Gun_Uzi : MonoBehaviour {
 
     private void Update()
     {
-        gunType = PlayerPrefs.GetInt("GunType"); //총 종류 확인
     }
 
     private void OnEnable() {
@@ -122,8 +120,7 @@ public class Gun_Uzi : MonoBehaviour {
 
         gunAudioPlayer.PlayOneShot(shotClip);
 
-        if (gunType == 1)
-        {
+
             // 라인 렌더러를 활성화하여 총알 궤적을 그린다
             bulletLineRenderer.SetPosition(0, fireTransform.position);
             bulletLineRenderer.SetPosition(1, hitPosition);
@@ -134,7 +131,6 @@ public class Gun_Uzi : MonoBehaviour {
 
             // 라인 렌더러를 비활성화하여 총알 궤적을 지운다
             bulletLineRenderer.enabled = false;
-        }
     }
 
     // 재장전 시도

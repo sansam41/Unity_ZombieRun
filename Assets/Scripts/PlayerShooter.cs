@@ -22,7 +22,8 @@ public class PlayerShooter : MonoBehaviour {
         playerInput = GetComponent<PlayerInput>();
         playerAnimator = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
-        gunType=PlayerPrefs.GetInt("GunType");
+        gunType=PlayerPrefs.GetInt("GunType");  //GunType 
+                                                //1:Uzi, 2:RocketLauncher
     }
 
     private void OnEnable() {
@@ -58,6 +59,7 @@ public class PlayerShooter : MonoBehaviour {
     }
        else if (playerInput.reload)
         {
+            //RocketLauncher일 경우 자동 재장전 이므로 Uzi일 경우에만 실행
             if (gunType == 1)
                 if (Uzi.Reload())
                 {
@@ -120,6 +122,7 @@ public class PlayerShooter : MonoBehaviour {
         }
     }
 
+    //gunType에 알맞는 Fire 실행
     private void delayfuntion() {
         if(playerMovement.enabled)
         if (gunType == 1)

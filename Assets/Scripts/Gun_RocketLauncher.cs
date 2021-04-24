@@ -11,24 +11,18 @@
         public Vector2 audioPitch = new Vector2(.9f, 1.1f);
 
         
-        public GameObject muzzlePrefab;
-        public GameObject muzzlePosition;
+        public GameObject muzzlePrefab;//포구 효과
+        public GameObject muzzlePosition;//포구 위치
 
         
-        public bool autoFire;
-        public float shotDelay = .5f;
-        public bool rotate = true;
-        public float rotationSpeed = .25f;
+        public float shotDelay = .5f;//딜레이 시간
 
         
-        public GameObject scope;
-        public bool scopeActive = true;
-        private bool lastScopeState;
 
 
 
 
-        public GameObject projectilePrefab;
+        public GameObject projectilePrefab; //탄환 프리펩
 
         public GameObject projectileToDisableOnFire;
 
@@ -39,7 +33,6 @@
         {
             if(source != null) source.clip = GunShotClip;
             timeLastFired = 0;
-            lastScopeState = scopeActive;
         }
 
         private void Update()
@@ -101,7 +94,7 @@
         }
     }
 
-        //포구 다시 생성
+        //포구에 있는 탄환 다시 생성
         private void ReEnableDisabledProjectile()
         {
             reloadSource.Play();

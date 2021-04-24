@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
-// 플레이어 캐릭터를 사용자 입력에 따라 움직이는 스크립트
+// 플레이어 캐릭터의 움직임을 조종하는 스크립트
 public class PlayerMovement : MonoBehaviour {
     public float moveSpeed = 180f; // 앞뒤 움직임의 속도
     public float rotateSpeed = 180f; // 좌우 회전 속도
@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour {
         {
             SmoothMove();
 
-            //플레이어가 다른 방향으로 이동 시에 애니메이션이 멈추는 경우를 방지
+            //플레이어가 다른 방향으로 이동 시에 애니메이션이 멈추는 경우를 방지(플레이어가 방향을 틀 경우 움직인은 상태이나 속도가 0으로 줄어 애니매이션이 정지)
             if (Math.Abs(playerInput.move) > Math.Abs(playerInput.rotate))
                 playerAnimator.SetFloat("Move", playerInput.move);
             else
@@ -50,49 +50,45 @@ public class PlayerMovement : MonoBehaviour {
 
         Vector3 movement=Vector3.zero;
         movement.Set(xInput, 0, zInput);
-        movement = movement.normalized * moveSpeed * Time.deltaTime;
+        movement = movement.normalized * moveSpeed * Time.deltaTime;//화면 프레임에 비례하여 플레이어의 속도 및 움직임 조절
 
-        Quaternion newRotation = Quaternion.LookRotation(movement);
+        Quaternion newRotation = Quaternion.LookRotation(movement);//플레이어가 바라봐야할 방향을 설정
 
-        playerRigidbody.rotation = Quaternion.Slerp(playerRigidbody.rotation, newRotation, moveSpeed * Time.deltaTime);
-        playerRigidbody.MovePosition(transform.position + movement);
+        playerRigidbody.rotation = Quaternion.Slerp(playerRigidbody.rotation, newRotation, moveSpeed * Time.deltaTime);//플레이어캐릭터가 비자연스럽게 회전하는 것을 방지
+        playerRigidbody.MovePosition(transform.position + movement);//플레이어 캐릭터가 방향키의 방향으로 정해진 속도만큼 움직임
     }
 
-    //
+    //클릭시 그 방향을 바라보도록
     public void LookAtTarget() {
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))//카메라상에서의 마우스의 좌표
         {
             Vector3 mousePoint = hit.point;
-            Vector3 playerLook = Vector3.zero;
-            playerLook.Set(mousePoint.x, playerRigidbody.position.y, mousePoint.z);//플레이어가 보는 높이는 고정되어야 한다.
 
 
-            Vector3 dir = mousePoint - transform.position;
-            float angle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
-            Quaternion newRotation= Quaternion.Euler(0, angle, 0);
-            playerRigidbody.rotation = Quaternion.Slerp(playerRigidbody.rotation, newRotation, rotateSpeed * Time.deltaTime);
+            Vector3 dir = mousePoint - transform.position; //플레이어가 마우스포인터를 바라보는 방향을 구함 
+            float angle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;//방향에 대한 절대각도를 구함
+            Quaternion newRotation= Quaternion.Euler(0, angle, 0);//Vector3 절대각도를 Quaternion으로 변환
+            playerRigidbody.rotation = Quaternion.Slerp(playerRigidbody.rotation, newRotation, rotateSpeed * Time.deltaTime);//캐릭터가 해당 방향을 바라보도록 설정
         }
 
 
     }
 
+
     public void playerOn() {
-        Invoke("On", 0.2f);
+        UIManager.instance.SetActiveNpcTalkBox(false);
+        Invoke("On", 0.2f);//버튼 클릭시 총이 발사되는 것을 방지하기 위해 on을 invoke로 호출해준다.
     }
 
     public void playerStop()
     {
+        //npc와 대화를 하거나 던전 문이 열리거나 닫힐 때 플레이어의 움직임을 잠시 멈춘다.
         playerAnimator.SetFloat("Move", 0);
         playerMovement.enabled = false;
     }
-    public void goodbye()
-    {
-        UIManager.instance.SetActiveNpcTalkBox(false);
-        Invoke("On", 0.1f);
 
-    }
-
+    //invoke호출을 위해 플레이어의 움직임을 true로 해주는 메소드를 따로 선언
     public void On()
     {
         playerMovement.enabled = true;

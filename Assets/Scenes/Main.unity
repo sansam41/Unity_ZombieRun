@@ -11627,6 +11627,7 @@ GameObject:
   - component: {fileID: 918440766}
   - component: {fileID: 918440768}
   - component: {fileID: 918440767}
+  - component: {fileID: 918440769}
   m_Layer: 0
   m_Name: fenceOpenCamera2
   m_TagString: Untagged
@@ -11699,6 +11700,15 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!45 &918440769
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918440765}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: 81f714daf7144784b8a2f42f1cd30927, type: 2}
 --- !u!1 &923332572
 GameObject:
   m_ObjectHideFlags: 0
@@ -13918,6 +13928,7 @@ GameObject:
   - component: {fileID: 1128857820}
   - component: {fileID: 1128857823}
   - component: {fileID: 1128857824}
+  - component: {fileID: 1128857825}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -13943,7 +13954,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -13983,7 +13994,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1128857819}
-  m_LocalRotation: {x: 0.3678848, y: 0.60387146, z: -0.3678849, w: 0.60387146}
+  m_LocalRotation: {x: 0.36788487, y: 0.60387146, z: -0.36788487, w: 0.60387146}
   m_LocalPosition: {x: -8, y: 16, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -14041,6 +14052,15 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!45 &1128857825
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128857819}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: 81f714daf7144784b8a2f42f1cd30927, type: 2}
 --- !u!1 &1129258726
 GameObject:
   m_ObjectHideFlags: 0
@@ -15626,7 +15646,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1213264885}
-  m_LocalRotation: {x: 0.3678848, y: 0.60387146, z: -0.3678849, w: 0.60387146}
+  m_LocalRotation: {x: 0.36788487, y: 0.60387146, z: -0.36788487, w: 0.60387146}
   m_LocalPosition: {x: -8, y: 16, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -16142,7 +16162,8 @@ MonoBehaviour:
   speedMax: 5.5
   speedMin: 3
   strongEnemyColor: {r: 1, g: 0, b: 0, a: 1}
-  Maxwave: 1
+  Maxwave: 3
+  LastRoom: 2
   SpawnPoint: {fileID: 1598856222}
 --- !u!4 &1266173268
 Transform:
@@ -23080,6 +23101,11 @@ PrefabInstance:
       objectReference: {fileID: 99224117}
     - target: {fileID: 114467243759996372, guid: 63226789a2ac34fec8493b064c47bd44,
         type: 3}
+      propertyPath: coinText
+      value: 
+      objectReference: {fileID: 99224117}
+    - target: {fileID: 114467243759996372, guid: 63226789a2ac34fec8493b064c47bd44,
+        type: 3}
       propertyPath: talkboxText
       value: 
       objectReference: {fileID: 923332576}
@@ -24459,6 +24485,7 @@ GameObject:
   - component: {fileID: 1905182602}
   - component: {fileID: 1905182604}
   - component: {fileID: 1905182603}
+  - component: {fileID: 1905182605}
   m_Layer: 0
   m_Name: fenceOpenCamera1
   m_TagString: Untagged
@@ -24531,6 +24558,15 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!45 &1905182605
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1905182601}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: 81f714daf7144784b8a2f42f1cd30927, type: 2}
 --- !u!1 &1906906057
 GameObject:
   m_ObjectHideFlags: 0
@@ -25537,6 +25573,7 @@ GameObject:
   - component: {fileID: 1998019790}
   - component: {fileID: 1998019789}
   - component: {fileID: 1998019791}
+  - component: {fileID: 1998019792}
   m_Layer: 0
   m_Name: MinimapCam
   m_TagString: Untagged
@@ -25614,6 +25651,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 1068073141}
+--- !u!45 &1998019792
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998019788}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: 81f714daf7144784b8a2f42f1cd30927, type: 2}
 --- !u!1001 &2001618629
 PrefabInstance:
   m_ObjectHideFlags: 0

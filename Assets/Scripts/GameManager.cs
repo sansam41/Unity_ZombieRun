@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 
-// 점수와 게임 오버 여부를 관리하는 게임 매니저
+// 게임 클리어, 게임 오버, 점수와 코인
+// 던전 내 다음 방으로 이동 하기위해 문을 열고 닫는 게임 매니저
+// 다른 클래스에서 접근하기 쉽도록 싱글톤 패턴 사용
 public class GameManager : MonoBehaviour {
     // 싱글톤 접근용 프로퍼티
     public static GameManager instance

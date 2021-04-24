@@ -28,7 +28,8 @@ public class EnemySpawner : MonoBehaviour {
     private int Room=-1;
     private int Open;
 
-    public int Maxwave = 1;
+    public int Maxwave = 3;
+    public int LastRoom = 2;
 
     public GameObject SpawnPoint;
 
@@ -60,7 +61,7 @@ public class EnemySpawner : MonoBehaviour {
                 if (wave == Maxwave)    //웨이브가 해당 방의 마지막 웨이브 였을 경우
                 {
                     Room++; //다음 방 Open
-                    if (Room >= 2)  //모든 방을 클리어 한 경우
+                    if (Room >= LastRoom)  //모든 방을 클리어 한 경우
                     {
                         isClear = true;
                         return;
@@ -110,11 +111,13 @@ public class EnemySpawner : MonoBehaviour {
         //현재 웨이브의 *1.5값을 반올림한 값만큼 적 스폰
         int spawnCount = Mathf.RoundToInt(wave * 1.5f);
         spawnCount += 2*(Room+1);
+
         for (int i = 0; i < spawnCount; i++) {
             //적의 세기를 0에서 100사이에서 결정
             float enemyIntensity = Random.Range(0f, 1f);
             CreateEnemy(enemyIntensity);
         }
+
         float BossIntensity = Random.Range(0f, 1f);
         if(Room==1&&wave== Maxwave)
             CreateBoss(BossIntensity);

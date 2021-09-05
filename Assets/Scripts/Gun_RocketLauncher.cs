@@ -1,48 +1,36 @@
 ﻿using UnityEngine;
 
 
-    public class Gun_RocketLauncher: MonoBehaviour
-    {
-        
-        public AudioClip GunShotClip;
-        public AudioClip ReloadClip;
-        public AudioSource source;
-        public AudioSource reloadSource;
+    public class Gun_RocketLauncher: Weapon
+{
+
+
         public Vector2 audioPitch = new Vector2(.9f, 1.1f);
 
         
         public GameObject muzzlePrefab;//포구 효과
         public GameObject muzzlePosition;//포구 위치
-
-        
-        public float shotDelay = .5f;//딜레이 시간
-
-        
-
-
-
-
         public GameObject projectilePrefab; //탄환 프리펩
 
         public GameObject projectileToDisableOnFire;
 
         [SerializeField] private float timeLastFired;   //발사 속도 조절을 위한 변수
 
-
         private void Start()
         {
-            if(source != null) source.clip = GunShotClip;
-            timeLastFired = 0;
+            timeBetFire = 1.0f;//딜레이 시간
+            if (gunAudioPlayer != null) gunAudioPlayer.clip = shotClip;
+                timeLastFired = 0;
         }
 
         private void Update()
         {
         }
 
-    public void Fire()
+    public override void Fire() 
     {
         // 다음 탄환 발사 가능 까지의 딜레이 검사
-        if ((timeLastFired + shotDelay) <= Time.time || timeLastFired == 0f)
+        if ((timeLastFired + timeBetFire) <= Time.time || timeLastFired == 0f)
         {
             timeLastFired = Time.time;
             // 포구 위치 생성
@@ -63,25 +51,25 @@
             }
 
             //오디오 관리
-            if (source != null)
+            if (gunAudioPlayer != null)
             {
 
-                if (source.transform.IsChildOf(transform))
+                if (gunAudioPlayer.transform.IsChildOf(transform))
                 {
-                    source.Play();
+                    gunAudioPlayer.Play();
                 }
                 else
                 {
                     
-                    AudioSource newAS = Instantiate(source);
-                    if ((newAS = Instantiate(source)) != null && newAS.outputAudioMixerGroup != null && newAS.outputAudioMixerGroup.audioMixer != null)
+                    AudioSource newAS = Instantiate(gunAudioPlayer);
+                    if ((newAS = Instantiate(gunAudioPlayer)) != null && newAS.outputAudioMixerGroup != null && newAS.outputAudioMixerGroup.audioMixer != null)
                     {
                         
                         newAS.outputAudioMixerGroup.audioMixer.SetFloat("Pitch", Random.Range(audioPitch.x, audioPitch.y));
                         newAS.pitch = Random.Range(audioPitch.x, audioPitch.y);
 
                         
-                        newAS.PlayOneShot(GunShotClip);
+                        newAS.PlayOneShot(shotClip);
 
                         
                         Destroy(newAS.gameObject, 4);

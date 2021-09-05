@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 // 주어진 Gun 오브젝트를 쏘거나 재장전
 // 알맞은 애니메이션을 재생하고 IK를 사용해 캐릭터 양손이 총에 위치하도록 조정
@@ -51,12 +52,16 @@ public class PlayerShooter : MonoBehaviour {
         // 입력을 감지하고 총 발사하거나 재장전
         if (playerInput.fire)
         {
-            if (playerMovement.enabled)
+            if (!EventSystem.current.IsPointerOverGameObject())
             {
-                playerMovement.LookAtTarget();
-                Invoke("delayfuntion", 0.1f);
+                if (playerMovement.enabled)
+                {
+                    playerMovement.LookAtTarget();
+                    Invoke("delayfuntion", 0.1f);
+                }
+            }
+
         }
-    }
        else if (playerInput.reload)
         {
             //RocketLauncher일 경우 자동 재장전 이므로 Uzi일 경우에만 실행
@@ -99,7 +104,7 @@ public class PlayerShooter : MonoBehaviour {
         playerAnimator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandMount.position);
         playerAnimator.SetIKRotation(AvatarIKGoal.LeftHand, leftHandMount.rotation);
 
-        //IK를 사용하여 왼손의 위치와 회전을 총의 오른쪽 손잡이에 맞춤
+        //IK를 사용하여 오른손의 위치와 회전을 총의 오른쪽 손잡이에 맞춤
         playerAnimator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1.0f); //위치에대한 가중치는 100%
         playerAnimator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1.0f); //회전에대한 가중치는 100%
 

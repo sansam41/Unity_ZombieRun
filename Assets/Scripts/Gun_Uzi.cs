@@ -2,16 +2,19 @@
 using UnityEngine;
 
 // 총을 구현한다
-public class Gun_Uzi : MonoBehaviour {
-    // 총의 상태를 표현하는데 사용할 타입을 선언한다
-    public enum State {
+public class Gun_Uzi : Weapon
+{
+    public enum UziState {
         Ready, // 발사 준비됨
         Empty, // 탄창이 빔
         Reloading, // 재장전 중
         Wait //기다리기
     }
 
-    public State state { get; protected set; } // 현재 총의 상태
+
+
+
+    public UziState state { get; protected set; } // 현재 총의 상태
 
     public Transform fireTransform; // 총알이 발사될 위치
 
@@ -20,22 +23,9 @@ public class Gun_Uzi : MonoBehaviour {
 
     private LineRenderer bulletLineRenderer; // 총알 궤적을 그리기 위한 렌더러
 
-    private AudioSource gunAudioPlayer; // 총 소리 재생기
-    public AudioClip shotClip; // 발사 소리
-    public AudioClip reloadClip; // 재장전 소리
-
-    public float damage = 25; // 공격력
-    public float upgradedDamage = 10;
-    protected float fireDistance = 50f; // 사정거리
-
-    public int ammoRemain = 10000; // 남은 전체 탄약
-    public int magCapacity = 25; // 탄창 용량
-    public int magAmmo; // 현재 탄창에 남아있는 탄약
 
 
-    public float timeBetFire = 0.12f; // 총알 발사 간격
-    public float reloadTime = 1.8f; // 재장전 소요 시간
-    protected float lastFireTime; // 총을 마지막으로 발사한 시점
+
 
 
     private void Awake() {
@@ -48,7 +38,16 @@ public class Gun_Uzi : MonoBehaviour {
         //라인 렌더러 비활성화
         bulletLineRenderer.enabled = false;
 
+        damage = 25; // 공격력
+        upgradedDamage = 10;
+        fireDistance = 50f; // 사정거리
 
+        ammoRemain = 10000; // 남은 전체 탄약
+        magCapacity = 25; // 탄창 용량
+
+
+        timeBetFire = 0.12f; // 총알 발사 간격
+        reloadTime = 1.8f; // 재장전 소요 시간
     }
 
     private void Update()
@@ -59,15 +58,14 @@ public class Gun_Uzi : MonoBehaviour {
         // 총 상태 초기화
         magAmmo = magCapacity;
         //총의 현재 상태를 총을 쏠 준비가 된 상태로 변경
-        state = State.Ready;
+        state = UziState.Ready;
         //마지막으로 총을 쏜 시점을 초기화
         lastFireTime = 0;
     }
 
     // 발사 시도
-    public void Fire() {
-        upgradedDamage = damage + 10 * PlayerPrefs.GetInt("Upgrade");
-        if (state == State.Ready && Time.time >= lastFireTime + timeBetFire) {
+    public override void Fire() {
+        if (state == UziState.Ready && Time.time >= lastFireTime + timeBetFire) {
             lastFireTime = Time.time;
             Shot();
         }
@@ -79,7 +77,6 @@ public class Gun_Uzi : MonoBehaviour {
         RaycastHit hit;
         //탄알이 맞은 곳을 저장할 변수
         Vector3 hitPosition = Vector3.zero;
-        Debug.Log(upgradedDamage);
 
         //레이캐스트(시작 지점, 방향, 충돌 정보 컨테이너_out, 사정거리)
         if (Physics.Raycast(fireTransform.position, fireTransform.forward, out hit, fireDistance))
@@ -94,7 +91,7 @@ public class Gun_Uzi : MonoBehaviour {
             if (target != null)
             {
                 //상대방의 OnDamage함수를 실행시켜 상대방에 대미지 주기
-                target.OnDamage(upgradedDamage, hit.point, hit.normal);
+                target.OnDamage(GetDamage(), hit.point, hit.normal);
             }
             hitPosition = hit.point;
         }
@@ -106,7 +103,7 @@ public class Gun_Uzi : MonoBehaviour {
         StartCoroutine(ShotEffect(hitPosition));//발사 이펙트 코루틴 시작
         magAmmo--;
         if (magAmmo <= 0) {
-            state = State.Empty;
+            state = UziState.Empty;
         }
 
  
@@ -136,7 +133,7 @@ public class Gun_Uzi : MonoBehaviour {
     // 재장전 시도
     public bool Reload()
     {
-        if (state == State.Reloading || ammoRemain <= 0 || magAmmo >= magCapacity){
+        if (state == UziState.Reloading || ammoRemain <= 0 || magAmmo >= magCapacity){
             //이미 재장전 중이거나 만음 탄알이 없음. 혹은 탄창에 탄알이 가득 찬 경우.
             return false;
         }
@@ -148,7 +145,7 @@ public class Gun_Uzi : MonoBehaviour {
     // 실제 재장전 처리를 진행
     private IEnumerator ReloadRoutine() {
         // 현재 상태를 재장전 중 상태로 전환
-        state = State.Reloading;
+        state = UziState.Reloading;
         //재장전 소리 재생
         gunAudioPlayer.PlayOneShot(reloadClip);
 
@@ -166,9 +163,9 @@ public class Gun_Uzi : MonoBehaviour {
         magAmmo += ammoToFill;
         ammoRemain -= ammoToFill;
 
-        state = State.Ready;
+        state = UziState.Ready;
         // 총의 현재 상태를 발사 준비된 상태로 변경
-        state = State.Ready;
+        state = UziState.Ready;
     }
 
 }

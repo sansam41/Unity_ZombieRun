@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using UnityEngine.EventSystems;
 // 플레이어 캐릭터의 움직임을 조종하는 스크립트
 public class PlayerMovement : MonoBehaviour {
     public float moveSpeed = 180f; // 앞뒤 움직임의 속도
@@ -24,8 +25,12 @@ public class PlayerMovement : MonoBehaviour {
     private void FixedUpdate() {
         // 물리 갱신 주기마다 움직임, 회전, 애니메이션 처리 실행
         if (playerInput.fire)
-        { 
-            playerAnimator.SetFloat("Move", 0);//총 발사 중에는 애니메이션을 멈춘다.
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                playerAnimator.SetFloat("Move", 0);//총 발사 중에는 애니메이션을 멈춘다.
+            }
+
         }
         else
         {

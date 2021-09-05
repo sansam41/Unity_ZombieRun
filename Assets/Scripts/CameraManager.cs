@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    public GameObject[] FenceOpenCamera = new GameObject[2];
+    public GameObject FenceOpenCamera;
+    public Transform[] FencePos=new Transform[2];
     public GameObject MainCamera;
     public GameObject Player;
     private PlayerMovement playerMovement;
@@ -33,8 +34,7 @@ public class CameraManager : MonoBehaviour
         playerMovement=Player.GetComponent<PlayerMovement>();
 
         MainCamera.SetActive(true);
-        for (int i = 0; i < FenceOpenCamera.Length; i++)
-            FenceOpenCamera[i].SetActive(false);
+        FenceOpenCamera.SetActive(false);
     }
 
     // Update is called once per frame
@@ -46,13 +46,14 @@ public class CameraManager : MonoBehaviour
     public void MainCameraOn() {
         playerMovement.playerOn();
         MainCamera.SetActive(true);
-        for (int i = 0; i < FenceOpenCamera.Length; i++)
-            FenceOpenCamera[i].SetActive(false);
+        FenceOpenCamera.SetActive(false);
     }
 
     public void FenceCameraOn(int i) {
         playerMovement.playerStop();
-        FenceOpenCamera[i].SetActive(true);
+        FenceOpenCamera.transform.position = FencePos[i].position;
+        FenceOpenCamera.transform.rotation = FencePos[i].rotation;
+        FenceOpenCamera.SetActive(true);
         MainCamera.SetActive(false);
     }
 }

@@ -4,30 +4,23 @@ using UnityEngine;
 
 namespace BigRookGames.Weapons
 {
-    public class ProjectileController : MonoBehaviour
+    public class ProjectileController : Gun_RocketLauncher
     {
-        // --- Config ---
-        public float speed = 100;
-        public LayerMask collisionLayerMask;
+        public float            speed = 100;
+        public LayerMask        collisionLayerMask;
 
-        // --- Explosion VFX ---
-        public GameObject rocketExplosion;
+        public GameObject       rocketExplosion;
+        public MeshRenderer     projectileMesh;
 
-        // --- Projectile Mesh ---
-        public MeshRenderer projectileMesh;
-
-        // --- Script Variables ---
-        private bool targetHit;
-
-        // --- Audio ---
-        public AudioSource inFlightAudioSource;
+        private bool            targetHit;
+        public AudioSource      inFlightAudioSource;
+        public ParticleSystem   disableOnHit;
 
 
-        // --- VFX ---
-        public ParticleSystem disableOnHit;
-        public float damage = 100f;
-
-        public float upgradedDamage;
+        private void Start()
+        {
+            damage = 100f;
+        }
 
         private void Update()
         {
@@ -37,10 +30,7 @@ namespace BigRookGames.Weapons
             // --- moves the game object in the forward direction at the defined speed ---
             transform.position += transform.forward * (speed * Time.deltaTime);
         }
-        private void Start()
-        {
-            upgradedDamage = damage + 10 * PlayerPrefs.GetInt("Upgrade");
-        }
+
 
 
         /// <summary>
@@ -65,9 +55,9 @@ namespace BigRookGames.Weapons
                 IDamageable target = col.GetComponent<IDamageable>();
                 if (target != null&&temptarget!=target)
                 {
-                    Debug.Log(upgradedDamage);
                     temptarget = target;
-                    target.OnDamage(upgradedDamage, collision.transform.position, collision.transform.position);
+                    target.OnDamage(GetDamage(), collision.transform.position, collision.transform.position);
+
                 }
             }
 
